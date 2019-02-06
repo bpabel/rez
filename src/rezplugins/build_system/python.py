@@ -29,107 +29,130 @@ class PythonBuildSystem(BuildSystem):
     create a cmake or bez build wrapper.
 
     """
-    @classmethod
-    def name(cls):
-        return "python"
 
-    @classmethod
-    def is_valid_root(cls, path, package=None):
-        return (os.path.isfile(os.path.join(path, "setup.py"))
-                and not os.path.isfile(os.path.join(path, "rezbuild.py")))
-
-    def __init__(self, working_dir, opts=None, package=None, write_build_scripts=False,
-                 verbose=False, build_args=[], child_build_args=[]):
+    def __init__(self,
+                 working_dir,
+                 opts=None,
+                 package=None,
+                 write_build_scripts=False,
+                 verbose=False,
+                 build_args=None,
+                 child_build_args=None):
         super(PythonBuildSystem, self).__init__(
             working_dir,
             opts=opts,
             package=package,
             write_build_scripts=write_build_scripts,
             verbose=verbose,
-            build_args=build_args,
-            child_build_args=child_build_args)
+            build_args=build_args or [],
+            child_build_args=child_build_args or [],
+        )
+
+    @classmethod
+    def name(cls):
+        """Return the name of the build system"""
+        return "python"
+
+    @classmethod
+    def is_valid_root(cls, path, package=None):
+        """Return True if this build system can build the source in path.
+
+        For backwards compatibility with previously existing build systems
+        that may have already been used to build python projects, this
+        plugin will not attempt to build python projects that are setup
+        for CMake or bez.
+        """
+        exclude = ['rezbuild.py', 'CMakeLists.txt']
+        return (
+            os.path.isfile(os.path.join(path, 'setup.py'))
+            and not any(os.path.isfile(os.path.join(path, fn)) for fn in exclude)
+        )
 
     @classmethod
     def bind_cli(cls, parser):
         """
-        Uses a 'parse_build_args.py' file to add options, if found.
+        Expose parameters to an argparse.ArgumentParser that are specific
+        to this build system.
         """
-        try:
-            with open("./parse_build_args.py") as f:
-                source = f.read()
-        except Exception as e:
-            return
+        return None
 
-        # detect what extra args have been added
-        before_args = set(x.dest for x in parser._actions)
+    def build(self,
+              context,
+              variant,
+              build_path,
+              install_path,
+              install=False,
+              build_type=BuildType.local,
+              ):
+        """Implement this method to perform the actual build.
 
-        try:
-            exec source in {"parser": parser}
-        except Exception as e:
-            print_warning("Error in ./parse_build_args.py: %s" % str(e))
+        Args:
+            context: A ResolvedContext object that the build process must be
+                executed within.
+            variant (`Variant`): The variant being built.
+            build_path: Where to write temporary build files. May be relative
+                to working_dir.
+            install_path (str): The package repository path to install the
+                package to, if installing. If None, defaults to
+                `config.local_packages_path`.
+            install: If True, install the build.
+            build_type: A BuildType (i.e local or central).
 
-        after_args = set(x.dest for x in parser._actions)
-        extra_args = after_args - before_args
+        Returns:
+            A dict containing the following information:
+            - success: Bool indicating if the build was successful.
+            - extra_files: List of created files of interest, not including
+                build targets. A good example is the interpreted context file,
+                usually named 'build.rxt.sh' or similar. These files should be
+                located under build_path. Rez may install them for debugging
+                purposes.
+            - build_env_script: If this instance was created with write_build_scripts
+                as True, then the build should generate a script which, when run
+                by the user, places them in the build environment.
 
-        # store extra args onto parser so we can get to it in self.build()
-        setattr(parser, "_rezbuild_extra_args", list(extra_args))
+        Examples:
+            # Normal build and install
+            rez-build -i
 
-    def build(self, context, variant, build_path, install_path, install=False,
-              build_type=BuildType.local):
-        """Perform the build.
+            # Build and install in setuptools develop mode
+            rez-build -i -- develop
 
-        Note that most of the func args aren't used here - that's because this
-        info is already passed to the custom build command via environment
-        variables.
+            # Build with pip
+            rez-build -i -- pip
+
         """
+
         ret = {}
         if self.write_build_scripts:
             # write out the script that places the user in a build env, where
             # they can run bez directly themselves.
             build_env_script = os.path.join(build_path, "build-env")
-            create_forwarding_script(build_env_script,
-                                     module=("build_system", self.name),
-                                     func_name="_FWD__spawn_build_shell",
-                                     working_dir=self.working_dir,
-                                     build_path=build_path,
-                                     variant_index=variant.index,
-                                     install=install,
-                                     install_path=install_path)
-
+            create_forwarding_script(
+                build_env_script,
+                module=("build_system", self.name),
+                func_name="_FWD__spawn_build_shell",
+                working_dir=self.working_dir,
+                build_path=build_path,
+                variant_index=variant.index,
+                install=install,
+                install_path=install_path,
+            )
             ret["success"] = True
             ret["build_env_script"] = build_env_script
             return ret
 
         # run the build command
         def _make_callack(env=None):
-            def _callback(executor):
-                self._add_build_actions(executor,
-                                        context=context,
-                                        package=self.package,
-                                        variant=variant,
-                                        build_type=build_type,
-                                        install=install,
-                                        build_path=build_path,
-                                        install_path=install_path)
-
-                if self.opts:
-                    # write args defined in ./parse_build_args.py out as env vars
-                    extra_args = getattr(self.opts.parser, "_rezbuild_extra_args", [])
-
-                    for key, value in vars(self.opts).iteritems():
-                        if key in extra_args:
-                            varname = "__PARSE_ARG_%s" % key.upper()
-
-                            # do some value conversions
-                            if isinstance(value, bool):
-                                value = 1 if value else 0
-                            elif isinstance(value, (list, tuple)):
-                                value = map(str, value)
-                                value = map(quote, value)
-                                value = ' '.join(value)
-
-                            executor.env[varname] = value
-
+            def _setup_build_environment(executor):
+                self.set_standard_vars(
+                    executor=executor,
+                    context=context,
+                    variant=variant,
+                    build_type=build_type,
+                    install=install,
+                    build_path=build_path,
+                    install_path=install_path,
+                )
                 if env:
                     for key, value in env.items():
                         if isinstance(value, (list, tuple)):
@@ -137,8 +160,7 @@ class PythonBuildSystem(BuildSystem):
                                 executor.env[key].append(path_)
                         else:
                             executor.env[key] = value
-
-            return _callback
+            return _setup_build_environment
 
         build_arg_parser = argparse.ArgumentParser()
         build_arg_parser.add_argument('--develop')
@@ -146,7 +168,7 @@ class PythonBuildSystem(BuildSystem):
         build_args = self.build_args or []
         install_mode = install
         develop_mode = 'develop' in build_args
-        pip_mode = 'pip' in  build_args
+        pip_mode = 'pip' in build_args
 
         source_path = self.working_dir
         py_install_root = os.path.join(source_path, 'build', '_py_install')
@@ -156,12 +178,16 @@ class PythonBuildSystem(BuildSystem):
         prefix = 'rez'
 
         def _run_context_shell(command, cwd, env=None):
+            """Run a command within a resolved build context.
+            """
             _callback = _make_callack(env)
-            retcode, _, _ = context.execute_shell(command=command,
-                                                  block=True,
-                                                  cwd=cwd,
-                                                  parent_environ=None,
-                                                  actions_callback=_callback)
+            retcode, _, _ = context.execute_shell(
+                command=command,
+                block=True,
+                cwd=cwd,
+                parent_environ=None,
+                actions_callback=_callback,
+            )
             return retcode
 
         def _copy_tree(src, dest):
@@ -172,19 +198,19 @@ class PythonBuildSystem(BuildSystem):
                 shutil.copytree(src, dest)
 
         def _setup_py_build():
-            cmds = ['python', setup_py, 'install', '--root', py_install_root, '--prefix', prefix, '-f']
-            # subprocess.call(cmds, cwd=source_path)
+            cmds = ['python', setup_py, 'install', '--root', py_install_root,
+                    '--prefix', prefix, '-f']
             return _run_context_shell(cmds, cwd=source_path)
 
         def _pip_build():
-            #TODO: pip 10 will install wheel builds by default, making this intermediate wheel build step unnecessary
+            #TODO: pip 10 will install wheel builds by default, making this
+            # intermediate wheel build step unnecessary.
             # Generate wheel
             print('Building wheel...')
             pip = 'pip'
             # These args speed up pip builds
             pip_args = ['--disable-pip-version-check', '--no-deps', '--no-index']
             cmds = [pip, 'wheel', '.', '-w', dist_root] + pip_args
-            # subprocess.call(cmds, cwd=source_path)
             _run_context_shell(cmds, cwd=source_path)
 
             # Install wheel that we just built
@@ -233,7 +259,6 @@ class PythonBuildSystem(BuildSystem):
             env = {'PYTHONPATH': [python_dir]}
             # Run normal python setup develop command
             cmds = ['python', setup_py, 'develop', '-d', python_dir, '-s', bin_dir]
-            # subprocess.call(cmds, cwd=source_path, env=env)
             retcode = _run_context_shell(cmds, cwd=source_path, env=env)
 
             # Move/Copy develop files into rez-build directory
@@ -270,17 +295,6 @@ class PythonBuildSystem(BuildSystem):
         ret["success"] = (not retcode)
         return ret
 
-    @classmethod
-    def _add_build_actions(cls, executor, context, package, variant,
-                           build_type, install, build_path, install_path=None):
-        cls.set_standard_vars(executor=executor,
-                              context=context,
-                              variant=variant,
-                              build_type=build_type,
-                              install=install,
-                              build_path=build_path,
-                              install_path=install_path)
-
 
 def _FWD__spawn_build_shell(working_dir, build_path, variant_index, install,
                             install_path=None):
@@ -289,8 +303,7 @@ def _FWD__spawn_build_shell(working_dir, build_path, variant_index, install,
     package = get_developer_package(working_dir)
     variant = package.get_variant(variant_index)
     config.override("prompt", "BUILD>")
-
-    callback = functools.partial(PythonBuildSystem._add_build_actions,
+    callback = functools.partial(PythonBuildSystem.set_standard_vars,
                                  context=context,
                                  package=package,
                                  variant=variant,
