@@ -17,8 +17,6 @@ from rez.packages_ import get_developer_package
 from rez.resolved_context import ResolvedContext
 from rez.config import config
 from rez.utils.colorize import heading, Printer
-from rez.utils.logging_ import print_warning
-from rez.utils.yaml import dump_yaml
 
 
 class PythonBuildSystem(BuildSystem):
@@ -67,14 +65,6 @@ class PythonBuildSystem(BuildSystem):
             os.path.isfile(os.path.join(path, 'setup.py'))
             and not any(os.path.isfile(os.path.join(path, fn)) for fn in exclude)
         )
-
-    @classmethod
-    def bind_cli(cls, parser):
-        """
-        Expose parameters to an argparse.ArgumentParser that are specific
-        to this build system.
-        """
-        return None
 
     def build(self,
               context,
@@ -141,7 +131,8 @@ class PythonBuildSystem(BuildSystem):
             ret["build_env_script"] = build_env_script
             return ret
 
-        # run the build command
+        # Creates the action callback to setup the build environment
+        # after the build context is resolved.
         def _make_callack(env=None):
             def _setup_build_environment(executor):
                 self.set_standard_vars(
@@ -161,9 +152,6 @@ class PythonBuildSystem(BuildSystem):
                         else:
                             executor.env[key] = value
             return _setup_build_environment
-
-        build_arg_parser = argparse.ArgumentParser()
-        build_arg_parser.add_argument('--develop')
 
         build_args = self.build_args or []
         install_mode = install
@@ -198,14 +186,15 @@ class PythonBuildSystem(BuildSystem):
                 shutil.copytree(src, dest)
 
         def _setup_py_build():
+            """Performs a normal setup.py build."""
             cmds = ['python', setup_py, 'install', '--root', py_install_root,
                     '--prefix', prefix, '-f']
             return _run_context_shell(cmds, cwd=source_path)
 
         def _pip_build():
+            """Performs a pip build."""
             #TODO: pip 10 will install wheel builds by default, making this
             # intermediate wheel build step unnecessary.
-            # Generate wheel
             print('Building wheel...')
             pip = 'pip'
             # These args speed up pip builds
@@ -221,6 +210,7 @@ class PythonBuildSystem(BuildSystem):
             return _run_context_shell(cmds, cwd=source_path)
 
         def _build():
+            """Normal setup.py build mode."""
             # Clear out old python builds
             if os.path.exists(py_install_root):
                 shutil.rmtree(py_install_root)
@@ -244,6 +234,7 @@ class PythonBuildSystem(BuildSystem):
             return retcode
 
         def _develop():
+            """setup.py build in develop mode"""
             # Clear out old develop builds
             if os.path.exists(py_develop_root):
                 shutil.rmtree(py_develop_root)
