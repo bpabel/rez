@@ -34,7 +34,7 @@ class PythonBuildSystem(BuildSystem):
         return "python"
 
     @classmethod
-    def is_valid_root(cls, path):
+    def is_valid_root(cls, path, package=None):
         return (os.path.isfile(os.path.join(path, "setup.py"))
                 and not os.path.isfile(os.path.join(path, "rezbuild.py")))
 
