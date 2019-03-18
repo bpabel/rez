@@ -5,7 +5,7 @@ from rez.package_filter import PackageFilterList, TimestampRule
 from rez.utils.memcached import memcached_client, pool_memcached_connections
 from rez.utils.logging_ import log_duration
 from rez.config import config
-from rez.vendor.enum import Enum
+from enum import Enum
 from contextlib import contextmanager
 from hashlib import sha1
 import os

@@ -52,7 +52,7 @@ class ViewGraphButton(QtGui.QToolButton, ContextViewMixin):
         view_graph(graph_str, self.window(), prune_to=self.package_name)
 
     def _view_dependency_graph(self):
-        from rez.vendor.pygraph.readwrite.dot import write as write_dot
+        from pygraph.readwrite.dot import write as write_dot
         graph = self.context().get_dependency_graph()
         graph_str = write_dot(graph)
         view_graph(graph_str, self.window(), prune_to=self.package_name)

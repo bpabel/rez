@@ -1,10 +1,10 @@
 """
 test dependency resolving algorithm
 """
-from rez.vendor.version.requirement import Requirement
+from version.requirement import Requirement
 from rez.solver import Solver, Cycle, SolverStatus
 from rez.config import config
-import rez.vendor.unittest2 as unittest
+import unittest2 as unittest
 from rez.tests.util import TestBase
 import itertools
 import os.path

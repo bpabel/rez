@@ -8,9 +8,9 @@ from rez.utils.scope import scoped_format
 from rez.exceptions import ConfigurationError
 from rez import module_root_path
 from rez.system import system
-from rez.vendor.schema.schema import Schema, SchemaError, And, Or, Use
-from rez.vendor import yaml
-from rez.vendor.yaml.error import YAMLError
+from schema.schema import Schema, SchemaError, And, Or, Use
+import yaml
+from yaml.error import YAMLError
 from rez.backport.lru_cache import lru_cache
 from contextlib import contextmanager
 from inspect import ismodule
@@ -786,7 +786,7 @@ def _replace_config(other):
 
 @lru_cache()
 def _load_config_py(filepath):
-    from rez.vendor.six.six import exec_
+    from six.six import exec_
 
     reserved = dict(
         rez_version=__version__,

@@ -5,8 +5,8 @@ from rezgui.mixins.ContextViewMixin import ContextViewMixin
 from rez.packages_ import PackageSearchPath
 from rez.package_filter import PackageFilterList
 from rez.resolved_context import PatchLock, get_lock_request
-from rez.vendor.version.requirement import RequirementList
-from rez.vendor.version.version import VersionRange
+from version.requirement import RequirementList
+from version.version import VersionRange
 from functools import partial
 
 

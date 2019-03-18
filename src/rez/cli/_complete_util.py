@@ -1,7 +1,7 @@
 import os
 import os.path
 from fnmatch import fnmatch
-from rez.vendor.argcomplete import CompletionFinder, default_validator, \
+from argcomplete import CompletionFinder, default_validator, \
     sys_encoding, split_line, debug
 
 

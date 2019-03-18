@@ -4,8 +4,8 @@ Utilities related to formatting output or translating input.
 from __future__ import absolute_import
 
 from string import Formatter
-from rez.vendor.enum import Enum
-from rez.vendor.version.requirement import Requirement
+from enum import Enum
+from version.requirement import Requirement
 from rez.exceptions import PackageRequestError
 from pprint import pformat
 import os

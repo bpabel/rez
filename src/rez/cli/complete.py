@@ -1,7 +1,7 @@
 """
 Prints package completion strings.
 """
-from rez.vendor import argparse
+import argparse
 
 
 __doc__ = argparse.SUPPRESS

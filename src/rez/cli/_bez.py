@@ -1,9 +1,11 @@
 import os
 import sys
-import os.path
 import textwrap
 import subprocess
-from rez.vendor import yaml, argparse
+import argparse
+
+import yaml
+
 from rez.utils.filesystem import TempDirs
 from rez.config import config
 

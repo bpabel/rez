@@ -23,8 +23,8 @@ from rez.utils.filesystem import make_path_writable
 from rez.serialise import load_from_file, FileFormat
 from rez.config import config
 from rez.backport.lru_cache import lru_cache
-from rez.vendor.schema.schema import Schema, Optional, And, Use, Or
-from rez.vendor.version.version import Version, VersionRange
+from schema.schema import Schema, Optional, And, Use, Or
+from version.version import Version, VersionRange
 
 
 debug_print = config.debug_printer("resources")
@@ -603,7 +603,7 @@ class FileSystemPackageRepository(PackageRepository):
 
     @contextmanager
     def _lock_package(self, package_name, package_version=None):
-        from rez.vendor.lockfile import LockFile
+        from lockfile import LockFile
 
         path = self.location
 

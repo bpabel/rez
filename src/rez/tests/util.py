@@ -1,4 +1,4 @@
-import rez.vendor.unittest2 as unittest
+import unittest2 as unittest
 from rez.config import config, _create_locked_config
 from rez.shells import get_shell_types
 from rez.system import system

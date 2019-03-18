@@ -10,7 +10,7 @@ from rez.packages_ import get_developer_package
 from rez.utils.platform_ import platform_
 from rez.config import config
 from rez.backport.shutilwhich import which
-from rez.vendor.schema.schema import Or
+from schema.schema import Or
 from rez.shells import create_shell
 import functools
 import os.path

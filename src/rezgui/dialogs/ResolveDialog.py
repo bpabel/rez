@@ -6,7 +6,7 @@ from rezgui.widgets.TimestampWidget import TimestampWidget
 from rezgui.dialogs.WriteGraphDialog import view_graph
 from rezgui.objects.ResolveThread import ResolveThread
 from rezgui.objects.App import app
-from rez.vendor.version.requirement import Requirement
+from version.requirement import Requirement
 from rez.config import config
 import StringIO
 

@@ -2,7 +2,7 @@ from rezgui.qt import QtCore
 from rez.resolved_context import ResolvedContext, PatchLock, get_lock_request
 from rez.package_filter import PackageFilterList
 from rez.config import config
-from rez.vendor.pygraph.algorithms.accessibility import accessibility
+from pygraph.algorithms.accessibility import accessibility
 from collections import defaultdict
 import copy
 

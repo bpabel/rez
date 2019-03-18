@@ -8,7 +8,7 @@ from rez.package_maker__ import make_package
 from rez.system import system
 from rez.utils.lint_helper import env
 from rez.utils.platform_ import platform_
-from rez.vendor.version.version import Version
+from version.version import Version
 import shutil
 import os.path
 

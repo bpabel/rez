@@ -1,6 +1,7 @@
 """The main command-line entry point."""
 import sys
-from rez.vendor.argparse import _StoreTrueAction, SUPPRESS
+from argparse import _StoreTrueAction, SUPPRESS
+
 from rez.cli._util import subcommands, LazyArgumentParser, _env_var_true
 from rez.utils.logging_ import print_error
 from rez.exceptions import RezError, RezSystemError

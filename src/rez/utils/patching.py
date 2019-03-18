@@ -1,4 +1,4 @@
-from rez.vendor.version.requirement import Requirement
+from version.requirement import Requirement
 
 
 def get_patched_request(requires, patchlist):

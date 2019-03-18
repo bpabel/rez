@@ -6,10 +6,10 @@ from rez.build_system import create_build_system
 from rez.resolved_context import ResolvedContext
 from rez.release_vcs import create_release_vcs
 from rez.packages_ import iter_packages
-from rez.vendor import yaml
+import yaml
 from rez.system import system
 from rez.exceptions import ReleaseError, ReleaseVCSError
-import rez.vendor.unittest2 as unittest
+import unittest2 as unittest
 from rez.tests.util import TestBase, TempdirMixin, shell_dependent, \
     install_dependent
 from rez.package_serialise import dump_package_data

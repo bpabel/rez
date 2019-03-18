@@ -1,7 +1,7 @@
 """
 test configuration settings
 """
-import rez.vendor.unittest2 as unittest
+import unittest2 as unittest
 from rez.tests.util import TestBase
 from rez.exceptions import ConfigurationError
 from rez.config import Config, get_module_root_config, _replace_config
@@ -195,7 +195,7 @@ class TestConfig(TestBase):
     def test_6(self):
         """Test setting of dict values from environ"""
         from rez.config import Dict
-        from rez.vendor.schema.schema import Schema
+        from schema.schema import Schema
 
         class TestConfig(Config):
             schema = Schema({

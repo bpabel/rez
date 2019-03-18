@@ -4,7 +4,7 @@
 _rez_version = "2.27.0"
 
 try:
-    from rez.vendor.version.version import Version
+    from version.version import Version
     _rez_Version = Version(_rez_version)
 except:
     # the installer imports this file...

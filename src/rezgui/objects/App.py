@@ -5,7 +5,7 @@ from rezgui import organisation_name, application_name
 from rez.resolved_context import ResolvedContext
 from rez.exceptions import ResolvedContextError
 from rez.utils.data_utils import cached_property
-from rez.vendor import yaml
+import yaml
 from contextlib import contextmanager
 import sys
 import os.path

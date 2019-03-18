@@ -21,9 +21,9 @@ from rez.package_filter import PackageFilterList
 from rez.shells import create_shell
 from rez.exceptions import ResolvedContextError, PackageCommandError, RezError
 from rez.utils.graph_utils import write_dot, write_compacted, read_graph_from_string
-from rez.vendor.version.version import VersionRange
-from rez.vendor.enum import Enum
-from rez.vendor import yaml
+from version.version import VersionRange
+from enum import Enum
+import yaml
 from rez.utils import json
 from rez.utils.yaml import dump_yaml
 
@@ -886,7 +886,7 @@ class ResolvedContext(object):
         Returns:
             `pygraph.digraph` object.
         """
-        from rez.vendor.pygraph.classes.digraph import digraph
+        from pygraph.classes.digraph import digraph
 
         nodes = {}
         edges = set()

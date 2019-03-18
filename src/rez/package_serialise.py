@@ -1,8 +1,8 @@
-from rez.vendor import yaml
+import yaml
 from rez.serialise import FileFormat
 from rez.package_resources_ import help_schema, late_bound
-from rez.vendor.schema.schema import Schema, Optional, And, Or, Use
-from rez.vendor.version.version import Version
+from schema.schema import Schema, Optional, And, Or, Use
+from version.version import Version
 from rez.utils.sourcecode import SourceCode
 from rez.utils.formatting import PackageRequest, indent, \
     dict_to_attributes_code, as_block_string

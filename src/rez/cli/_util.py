@@ -1,7 +1,7 @@
 import os
 import sys
 import signal
-from rez.vendor.argparse import _SubParsersAction, ArgumentParser, SUPPRESS, \
+from argparse import _SubParsersAction, ArgumentParser, SUPPRESS, \
     ArgumentError
 
 

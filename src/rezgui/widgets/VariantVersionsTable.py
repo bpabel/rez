@@ -3,7 +3,7 @@ from rezgui.mixins.ContextViewMixin import ContextViewMixin
 from rez.package_filter import PackageFilterList
 from rezgui.util import get_timestamp_str, update_font, get_icon_widget, create_pane
 from rez.packages_ import iter_packages
-from rez.vendor.version.version import VersionRange
+from version.version import VersionRange
 
 
 class VariantVersionsTable(QtGui.QTableWidget, ContextViewMixin):

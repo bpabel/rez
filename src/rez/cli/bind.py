@@ -1,7 +1,7 @@
 '''
 Create a Rez package for existing software.
 '''
-from rez.vendor import argparse
+import argparse
 
 
 def setup_parser(parser, completions=False):

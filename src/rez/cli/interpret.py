@@ -28,7 +28,7 @@ def setup_parser(parser, completions=False):
 
     if completions:
         from rez.cli._complete_util import FilesCompleter
-        from rez.vendor.argcomplete.completers import EnvironCompleter
+        from argcomplete.completers import EnvironCompleter
         pv_action.completer = EnvironCompleter
         FILE_action.completer = FilesCompleter(dirs=False,
                                                file_patterns=["*.py", "*.rex"])

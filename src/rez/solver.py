@@ -12,16 +12,16 @@ from rez.packages_ import iter_packages
 from rez.package_repository import package_repo_stats
 from rez.utils.logging_ import print_debug
 from rez.utils.data_utils import cached_property
-from rez.vendor.pygraph.classes.digraph import digraph
-from rez.vendor.pygraph.algorithms.cycles import find_cycle
-from rez.vendor.pygraph.algorithms.accessibility import accessibility
+from pygraph.classes.digraph import digraph
+from pygraph.algorithms.cycles import find_cycle
+from pygraph.algorithms.accessibility import accessibility
 from rez.exceptions import PackageNotFoundError, ResolveError, \
     PackageFamilyNotFoundError, RezSystemError
-from rez.vendor.version.version import Version, VersionRange
-from rez.vendor.version.requirement import VersionedObject, Requirement, \
+from version.version import Version, VersionRange
+from version.requirement import VersionedObject, Requirement, \
     RequirementList
-from rez.vendor.enum import Enum
-from rez.vendor.sortedcontainers.sortedset import SortedSet
+from enum import Enum
+from sortedcontainers.sortedset import SortedSet
 from contextlib import contextmanager
 import copy
 import time

@@ -1,5 +1,5 @@
 from rez.config import config
-from rez.vendor.memcache.memcache import Client as Client_, SERVER_MAX_KEY_LENGTH
+from memcache.memcache import Client as Client_, SERVER_MAX_KEY_LENGTH
 from threading import local
 from contextlib import contextmanager
 from functools import update_wrapper

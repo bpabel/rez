@@ -1,8 +1,8 @@
 """
 unit tests for 'version' module
 """
-import rez.vendor.unittest2 as unittest
-from rez.vendor.version.test import TestVersionSchema
+import unittest2 as unittest
+from version.test import TestVersionSchema
 
 
 class TestVersions(TestVersionSchema):

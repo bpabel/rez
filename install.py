@@ -1,4 +1,4 @@
-"""
+  """
 This script uses an embedded copy of virtualenv to create a standalone,
 production-ready Rez installation in the specified directory.
 """
@@ -8,7 +8,7 @@ import shutil
 import os.path
 import textwrap
 import subprocess
-from optparse import OptionParser
+from argparse import ArgumentParser
 
 source_path = os.path.dirname(os.path.realpath(__file__))
 bin_path = os.path.join(source_path, "bin")
@@ -101,31 +101,29 @@ def copy_completion_scripts(dest_dir):
     return None
 
 
-if __name__ == "__main__":
-    usage = ("usage: %prog [options] DEST_DIR ('{version}' in DEST_DIR will "
-             "expand to Rez version)")
-    parser = OptionParser(usage=usage)
-    parser.add_option(
+def main():
+    parser = ArgumentParser()
+    parser.add_argument(
+        'dest', metavar='DEST_DIR', help="{version} in DEST_DIR will expand to Rez version"
+    )
+    parser.add_argument(
         '-v', '--verbose', action='count', dest='verbose', default=0,
         help="Increase verbosity.")
-    parser.add_option(
+    parser.add_argument(
         '-s', '--keep-symlinks', action="store_true", default=False,
+        dest="keep_symplinks",
         help="Don't run realpath on the passed DEST_DIR to resolve symlinks; "
              "ie, the baked script locations may still contain symlinks")
-    opts, args = parser.parse_args()
+    args = parser.parse_args()
 
     if " " in os.path.realpath(__file__):
         err_str = "\nThe absolute path of install.py cannot contain spaces due to setuptools limitation.\n" \
                   "Please move installation files to another location or rename offending folder(s).\n"
         parser.error(err_str)
 
-    # determine install path
-    if len(args) != 1:
-        parser.error("expected DEST_DIR")
-
-    dest_dir = args[0].format(version=_rez_version)
+    dest_dir = args.dest.format(version=_rez_version)
     dest_dir = os.path.expanduser(dest_dir)
-    if not opts.keep_symlinks:
+    if not args.keep_symlinks:
         dest_dir = os.path.realpath(dest_dir)
 
     print "installing rez to %s..." % dest_dir
@@ -180,3 +178,7 @@ if __name__ == "__main__":
             print(completion_path)
 
     print('')
+
+
+if __name__ == '__main__':
+    main()

@@ -7,7 +7,7 @@ from rez.package_resources_ import PackageFamilyResource, PackageResource, \
 from rez.exceptions import PackageMetadataError
 from rez.utils.formatting import is_valid_package_name, PackageRequest
 from rez.utils.resources import ResourceHandle, ResourcePool, cached_property
-from rez.vendor.version.requirement import VersionedObject
+from version.requirement import VersionedObject
 
 
 # This repository type is used when loading 'developer' packages (a package.yaml

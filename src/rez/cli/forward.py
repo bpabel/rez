@@ -1,5 +1,5 @@
 """See util.create_forwarding_script()."""
-from rez.vendor import argparse
+import argparse
 
 __doc__ = argparse.SUPPRESS
 
@@ -12,8 +12,8 @@ def setup_parser(parser, completions=False):
 def command(opts, parser, extra_arg_groups=None):
     from rez.config import config
     from rez.exceptions import RezSystemError
-    from rez.vendor import yaml
-    from rez.vendor.yaml.error import YAMLError
+    import yaml
+    from yaml.error import YAMLError
     import inspect
     import os.path
 

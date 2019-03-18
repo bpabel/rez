@@ -1,7 +1,7 @@
 """
 Utilities related to managing data types.
 """
-from rez.vendor.schema.schema import Schema, Optional
+from schema.schema import Schema, Optional
 from rez.exceptions import RexError
 from collections import MutableMapping
 from threading import Lock

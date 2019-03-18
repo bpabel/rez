@@ -7,7 +7,7 @@ from Queue import Queue
 from rez.utils import json
 from rez.utils.data_utils import remove_nones
 from rez.utils.logging_ import print_error
-from rez.vendor.amqp import Connection, basic_message
+from amqp import Connection, basic_message
 
 
 _lock = threading.Lock()

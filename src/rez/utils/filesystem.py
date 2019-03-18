@@ -226,7 +226,7 @@ def replace_file_or_dir(dest, source):
     Acts like an `os.rename` if `dest` does not exist. Otherwise, `dest` is
     deleted and `src` is renamed to `dest`.
     """
-    from rez.vendor.atomicwrites import replace_atomic
+    from atomicwrites import replace_atomic
 
     if not os.path.exists(dest):
         try:

@@ -8,13 +8,13 @@ import sys
 import tempfile
 from ast import literal_eval
 from rez.config import config
-from rez.vendor.pydot import pydot
+from pydot import pydot
 from rez.utils.system import popen
 from rez.utils.formatting import PackageRequest
 from rez.exceptions import PackageRequestError
-from rez.vendor.pygraph.readwrite.dot import read as read_dot
-from rez.vendor.pygraph.algorithms.accessibility import accessibility
-from rez.vendor.pygraph.classes.digraph import digraph
+from pygraph.readwrite.dot import read as read_dot
+from pygraph.algorithms.accessibility import accessibility
+from pygraph.classes.digraph import digraph
 
 
 def read_graph_from_string(txt):

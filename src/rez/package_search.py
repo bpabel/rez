@@ -14,12 +14,12 @@ from rez.packages_ import iter_package_families, iter_packages, get_latest_packa
 from rez.exceptions import PackageFamilyNotFoundError, ResourceContentError
 from rez.util import ProgressBar
 from rez.utils.colorize import critical, info, error, Printer
-from rez.vendor.pygraph.classes.digraph import digraph
+from pygraph.classes.digraph import digraph
 from rez.utils.formatting import expand_abbreviations
 
 from rez.config import config
 
-from rez.vendor.version.requirement import Requirement
+from version.requirement import Requirement
 
 
 def get_reverse_dependency_tree(package_name, depth=None, paths=None,

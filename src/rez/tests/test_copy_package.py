@@ -12,7 +12,7 @@ from rez.build_system import create_build_system
 from rez.resolved_context import ResolvedContext
 from rez.packages_ import get_latest_package
 from rez.package_copy import copy_package
-from rez.vendor.version.version import VersionRange
+from version.version import VersionRange
 from rez.tests.util import TestBase, TempdirMixin
 
 

@@ -1,7 +1,7 @@
 """
 Utilities for working with dict-based schemas.
 """
-from rez.vendor.schema.schema import Schema, Optional, Use, And
+from schema.schema import Schema, Optional, Use, And
 
 
 # an alias which just so happens to be the same number of characters as

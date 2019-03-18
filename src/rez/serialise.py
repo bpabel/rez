@@ -18,9 +18,9 @@ from rez.exceptions import ResourceError, InvalidPackageError
 from rez.utils.memcached import memcached
 from rez.utils.system import add_sys_paths
 from rez.config import config
-from rez.vendor.atomicwrites import atomic_write
-from rez.vendor.enum import Enum
-from rez.vendor import yaml
+from atomicwrites import atomic_write
+from enum import Enum
+import yaml
 
 
 tmpdir_manager = TempDirs(config.tmpdir, prefix="rez_write_")

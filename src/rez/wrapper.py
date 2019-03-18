@@ -2,8 +2,8 @@ from rez.resolved_context import ResolvedContext
 from rez.utils.colorize import heading, local, critical, Printer
 from rez.utils.data_utils import cached_property
 from rez.utils.formatting import columnise
-from rez.vendor import yaml
-from rez.vendor.yaml.error import YAMLError
+import yaml
+from yaml.error import YAMLError
 from rez.exceptions import RezSystemError, SuiteError
 from rez.config import config
 import os.path
@@ -86,7 +86,7 @@ class Wrapper(object):
         return retcode
 
     def _run(self, prefix_char, args):
-        from rez.vendor import argparse
+        import argparse
 
         parser = argparse.ArgumentParser(prog=self.tool_name,
                                          prefix_chars=prefix_char)

@@ -10,8 +10,8 @@ from rez.package_resources_ import help_schema, _commands_schema, \
 from rez.package_repository import create_memory_package_repository
 from rez.packages_ import Package
 from rez.package_py_utils import expand_requirement
-from rez.vendor.schema.schema import Schema, Optional, Or, Use, And
-from rez.vendor.version.version import Version
+from schema.schema import Schema, Optional, Or, Use, And
+from version.version import Version
 from contextlib import contextmanager
 import os
 

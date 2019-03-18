@@ -2,7 +2,7 @@ from rezgui.qt import QtCore, QtGui
 from rezgui.util import create_pane, get_icon_widget
 from rezgui.mixins.ContextViewMixin import ContextViewMixin
 from rezgui.widgets.PackageLoadingWidget import PackageLoadingWidget
-from rez.vendor.version.version import VersionRange
+from version.version import VersionRange
 from rez.package_help import PackageHelp
 from functools import partial
 

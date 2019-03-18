@@ -1,9 +1,9 @@
 from rez.utils.sourcecode import SourceCode
-from rez.vendor import yaml
-from rez.vendor.yaml.dumper import SafeDumper
-from rez.vendor.yaml.nodes import ScalarNode, MappingNode
-from rez.vendor.version.version import Version
-from rez.vendor.version.requirement import Requirement
+import yaml
+from yaml.dumper import SafeDumper
+from yaml.nodes import ScalarNode, MappingNode
+from version.version import Version
+from version.requirement import Requirement
 from types import FunctionType, BuiltinFunctionType
 from inspect import getsourcelines
 from textwrap import dedent

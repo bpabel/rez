@@ -1,10 +1,10 @@
 from rez.packages_ import get_latest_package
-from rez.vendor.version.version import Version
-from rez.vendor.distlib import DistlibException
-from rez.vendor.distlib.database import DistributionPath
-from rez.vendor.distlib.markers import interpret
-from rez.vendor.distlib.util import parse_name_and_version
-from rez.vendor.enum.enum import Enum
+from version.version import Version
+from distlib import DistlibException
+from distlib.database import DistributionPath
+from distlib.markers import interpret
+from distlib.util import parse_name_and_version
+from enum.enum import Enum
 from rez.resolved_context import ResolvedContext
 from rez.utils.system import popen
 from rez.utils.logging_ import print_debug, print_info, print_warning
