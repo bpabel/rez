@@ -2,19 +2,22 @@
 Functions for manipulating dot-based resolve graphs.
 """
 import re
-import os.path
+import os
 import subprocess
 import sys
 import tempfile
 from ast import literal_eval
-from rez.config import config
+
+import six
 from pydot import pydot
-from rez.utils.system import popen
-from rez.utils.formatting import PackageRequest
-from rez.exceptions import PackageRequestError
 from pygraph.readwrite.dot import read as read_dot
 from pygraph.algorithms.accessibility import accessibility
 from pygraph.classes.digraph import digraph
+
+from rez.config import config
+from rez.utils.system import popen
+from rez.utils.formatting import PackageRequest
+from rez.exceptions import PackageRequestError
 
 
 def read_graph_from_string(txt):
@@ -165,7 +168,7 @@ def prune_graph(graph_str, package_name):
     g = read_dot(graph_str)
     nodes = set()
 
-    for node, attrs in g.node_attr.iteritems():
+    for node, attrs in six.iteritems(g.node_attr):
         attr = [x for x in attrs if x[0] == "label"]
         if attr:
             label = attr[0][1]

@@ -1,16 +1,19 @@
 """
 Sends a post-release email
 """
+import os
+import sys
+import smtplib
+from email.mime.text import MIMEText
+
+import six
+from schema.schema import Or
+
 from rez.release_hook import ReleaseHook
 from rez.system import system
-from email.mime.text import MIMEText
 from rez.utils.logging_ import print_warning, print_error
 from rez.utils.yaml import load_yaml
 from rez.utils.scope import scoped_formatter
-from schema.schema import Or
-import os.path
-import smtplib
-import sys
 
 
 class EmailReleaseHook(ReleaseHook):
@@ -124,7 +127,7 @@ class EmailReleaseHook(ReleaseHook):
             match = True
 
             if filters:
-                for attr, test_value in test(filters, dict).iteritems():
+                for attr, test_value in six.iteritems(test(filters, dict)):
 
                     missing = object()
                     value = getattr(self.package, attr, missing)

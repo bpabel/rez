@@ -1,14 +1,17 @@
+from pprint import pformat
+
 import yaml
-from rez.serialise import FileFormat
-from rez.package_resources_ import help_schema, late_bound
+import six
 from schema.schema import Schema, Optional, And, Or, Use
 from version.version import Version
+
+from rez.serialise import FileFormat
+from rez.package_resources_ import help_schema, late_bound
 from rez.utils.sourcecode import SourceCode
 from rez.utils.formatting import PackageRequest, indent, \
     dict_to_attributes_code, as_block_string
 from rez.utils.schema import Required
 from rez.utils.yaml import dump_yaml
-from pprint import pformat
 
 
 # preferred order of keys in a package definition file
@@ -103,7 +106,7 @@ def dump_package_data(data, buf, format_=FileFormat.py, skip_attributes=None):
     if format_ == FileFormat.txt:
         raise ValueError("'txt' format not supported for packages.")
 
-    data_ = dict((k, v) for k, v in data.iteritems() if v is not None)
+    data_ = dict((k, v) for k, v in six.iteritems(data) if v is not None)
     data_ = package_serialise_schema.validate(data_)
     skip = set(skip_attributes or [])
 
@@ -115,7 +118,7 @@ def dump_package_data(data, buf, format_=FileFormat.py, skip_attributes=None):
                 items.append((key, value))
 
     # remaining are arbitrary keys
-    for key, value in data_.iteritems():
+    for key, value in six.iteritems(data_):
         if key not in skip:
             items.append((key, value))
 

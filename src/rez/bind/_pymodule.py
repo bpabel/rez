@@ -6,16 +6,19 @@ the current python interpreter - this is rez's, inside its installation
 virtualenv.
 """
 from __future__ import absolute_import
+import subprocess
+import shutil
+import sys
+import os
+
+import six
+
 from rez.bind._utils import check_version, find_exe, make_dirs, \
     get_version_in_python, run_python_command, log
 from rez.package_maker__ import make_package
 from rez.exceptions import RezBindError
 from rez.system import system
 from rez.utils.logging_ import print_warning
-import subprocess
-import shutil
-import sys
-import os.path
 
 
 def commands():
@@ -112,7 +115,7 @@ def bind(name, path, import_name=None, version_range=None, version=None,
         else:
             pkg.commands = commands
 
-        for key, value in extra_attrs.iteritems():
+        for key, value in six.iteritems(extra_attrs):
             pkg[key] = value
 
     return pkg.installed_variants

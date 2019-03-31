@@ -1,12 +1,14 @@
 """
 Utility code for supporting earlier Rez data in later Rez releases.
 """
-from rez.config import config
-from rez.utils.logging_ import print_debug
 import re
 import os
-import os.path
 import textwrap
+
+import six
+
+from rez.config import config
+from rez.utils.logging_ import print_debug
 
 
 variant_key_conversions = {
@@ -22,7 +24,7 @@ def convert_old_variant_handle(handle_dict):
     old_variables = handle_dict.get("variables", {})
     variables = dict(repository_type="filesystem")
 
-    for old_key, key in variant_key_conversions.iteritems():
+    for old_key, key in six.iteritems(variant_key_conversions):
         value = old_variables.get(old_key)
         #if value is not None:
         variables[key] = value

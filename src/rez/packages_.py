@@ -1,3 +1,9 @@
+import sys
+
+import six
+from version.version import VersionRange
+from version.requirement import VersionedObject
+
 from rez.package_repository import package_repository_manager
 from rez.package_resources_ import PackageFamilyResource, PackageResource, \
     VariantResource, package_family_schema, package_schema, variant_schema, \
@@ -10,11 +16,8 @@ from rez.utils.formatting import StringFormatMixin, StringFormatType
 from rez.utils.schema import schema_keys
 from rez.utils.resources import ResourceHandle, ResourceWrapper
 from rez.exceptions import PackageFamilyNotFoundError, ResourceError
-from version.version import VersionRange
-from version.requirement import VersionedObject
 from rez.serialise import FileFormat
 from rez.config import config
-import sys
 
 
 # ------------------------------------------------------------------------------
@@ -26,7 +29,7 @@ class PackageRepositoryResourceWrapper(ResourceWrapper, StringFormatMixin):
 
     def validated_data(self):
         data = ResourceWrapper.validated_data(self)
-        data = dict((k, v) for k, v in data.iteritems() if v is not None)
+        data = dict((k, v) for k, v in six.iteritems(data) if v is not None)
         return data
 
     @property

@@ -2,16 +2,17 @@
 Utilities related to formatting output or translating input.
 """
 from __future__ import absolute_import
-
-from string import Formatter
-from enum import Enum
-from version.requirement import Requirement
-from rez.exceptions import PackageRequestError
 from pprint import pformat
 import os
-import os.path
 import re
 import time
+from string import Formatter
+
+from enum import Enum
+from version.requirement import Requirement
+import six
+
+from rez.exceptions import PackageRequestError
 
 
 PACKAGE_NAME_REGSTR = "[a-zA-Z_0-9](\.?[a-zA-Z0-9_]+)*"
@@ -258,7 +259,7 @@ def dict_to_attributes_code(dict_):
         str.
     """
     lines = []
-    for key, value in dict_.iteritems():
+    for key, value in six.iteritems(dict_):
         if isinstance(value, dict):
             txt = dict_to_attributes_code(value)
             lines_ = txt.split('\n')

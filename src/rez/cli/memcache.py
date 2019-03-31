@@ -41,7 +41,7 @@ def poll(client, interval):
             t, stats = entry
 
             dt = t - prev_t
-            for instance, payload in stats.iteritems():
+            for instance, payload in six.iteritems(stats):
                 prev_payload = prev_stats.get(instance)
                 if payload and prev_payload:
                     # stats

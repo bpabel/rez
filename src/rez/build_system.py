@@ -1,4 +1,6 @@
-import os.path
+import os
+
+import six
 
 from rez.build_process_ import BuildType
 from rez.exceptions import BuildSystemError
@@ -249,5 +251,5 @@ class BuildSystem(object):
                                      build_path=build_path,
                                      install_path=install_path)
 
-        for var, value in vars.iteritems():
+        for var, value in six.iteritems(vars):
             executor.env[var] = value

@@ -7,6 +7,9 @@ import sys
 import os
 from subprocess import Popen, PIPE, STDOUT
 
+import six
+from schema.schema import Schema, Or, Optional, Use, And
+
 from rez.release_hook import ReleaseHook
 from rez.exceptions import ReleaseHookCancellingError
 from rez.config import config
@@ -14,7 +17,6 @@ from rez.system import system
 from rez.utils.logging_ import print_debug
 from rez.utils.scope import scoped_formatter
 from rez.utils.formatting import expandvars
-from schema.schema import Schema, Or, Optional, Use, And
 from rez.util import which
 
 
@@ -177,7 +179,7 @@ class CommandReleaseHook(ReleaseHook):
                 msgs = []
                 msgs.append("running command: %s" % list2cmdline(toks))
                 if env:
-                    for key, value in env.iteritems():
+                    for key, value in six.iteritems(env):
                         msgs.append("    with: %s=%s" % (key, value))
 
                 if self.settings.print_commands:

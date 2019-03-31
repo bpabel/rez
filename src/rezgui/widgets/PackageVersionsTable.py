@@ -1,3 +1,5 @@
+import six
+
 from rezgui.qt import QtCore, QtGui
 from rezgui.mixins.ContextViewMixin import ContextViewMixin
 from rezgui.models.ContextModel import ContextModel
@@ -50,7 +52,7 @@ class PackageVersionsTable(QtGui.QTableWidget, ContextViewMixin):
         """
         row = -1
         version = None
-        for i, package in self.packages.iteritems():
+        for i, package in six.iteritems(self.packages):
             if package.version in version_range \
                     and (version is None or version < package.version):
                 version = package.version

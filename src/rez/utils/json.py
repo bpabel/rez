@@ -3,6 +3,7 @@ import json
 from json import dumps  # noqa (forwarded)
 import sys
 
+import six
 
 if sys.version_info.major >= 3:
 
@@ -28,7 +29,7 @@ else:
             elif isinstance(input, dict) and not ignore_dicts:
                 return {
                     _byteify(k, ignore_dicts=True): _byteify(v, True)
-                    for k, v in input.iteritems()
+                    for k, v in six.iteritems(input)
                 }
             else:
                 return input

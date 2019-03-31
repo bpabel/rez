@@ -9,6 +9,11 @@ import os
 import os.path
 import threading
 
+import six
+from atomicwrites import atomic_write
+from enum import Enum
+import yaml
+
 from rez.package_resources_ import package_rex_keys
 from rez.utils.scope import ScopeContext
 from rez.utils.sourcecode import SourceCode, early, late, include
@@ -18,10 +23,6 @@ from rez.exceptions import ResourceError, InvalidPackageError
 from rez.utils.memcached import memcached
 from rez.utils.system import add_sys_paths
 from rez.config import config
-from atomicwrites import atomic_write
-from enum import Enum
-import yaml
-
 
 tmpdir_manager = TempDirs(config.tmpdir, prefix="rez_write_")
 debug_print = config.debug_printer("file_loads")
@@ -231,7 +232,7 @@ def _load_py(stream, filepath=None):
     excludes = set(('scope', 'InvalidPackageError', '__builtins__',
                     'early', 'late', 'include', 'ModifyList'))
 
-    for k, v in g.iteritems():
+    for k, v in six.iteritems(g):
         if k not in excludes and \
                 (k not in __builtins__ or __builtins__[k] != v):
             result[k] = v

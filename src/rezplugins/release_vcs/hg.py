@@ -1,10 +1,13 @@
 """
 Mercurial version control
 """
+import os
+
+import six
+
 from rez.release_vcs import ReleaseVCS
 from rez.exceptions import ReleaseVCSError
 from rez.utils.logging_ import print_debug, print_error
-import os.path
 
 
 class HgReleaseVCSError(ReleaseVCSError):
@@ -147,7 +150,7 @@ class HgReleaseVCS(ReleaseVCS):
         # rsplit, once, since we KNOW how the right side should be formatted
         tags = dict(line.rstrip().rsplit(None, 1) for line in lines
                     if line.strip())
-        for tag_name, tag_info in tags.iteritems():
+        for tag_name, tag_info in six.iteritems(tags):
             rev, shortnode = tag_info.split(':')
             tags[tag_name] = {'rev': rev, 'shortnode': shortnode}
         return tags

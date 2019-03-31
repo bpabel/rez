@@ -2,15 +2,18 @@
 Binds a python executable as a rez package.
 """
 from __future__ import absolute_import
+import os
+import shutil
+
+import six
+from version.version import Version
+
 from rez.bind._utils import check_version, find_exe, extract_version, \
     make_dirs, log, run_python_command
 from rez.package_maker__ import make_package
 from rez.system import system
 from rez.utils.lint_helper import env
 from rez.utils.platform_ import platform_
-from version.version import Version
-import shutil
-import os.path
 
 
 def setup_parser(parser):
@@ -71,7 +74,7 @@ def bind(path, version_range=None, opts=None, parser=None):
 
         if builtin_paths:
             pypath = make_dirs(root, "python")
-            for dirname, srcpath in builtin_paths.iteritems():
+            for dirname, srcpath in six.iteritems(builtin_paths):
                 destpath = os.path.join(pypath, dirname)
                 log("Copying builtins from %s to %s..." % (srcpath, destpath))
                 shutil.copytree(srcpath, destpath)

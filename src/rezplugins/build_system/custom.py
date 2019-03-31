@@ -3,9 +3,10 @@ Package-defined build command
 """
 from pipes import quote
 import functools
-import os.path
 import sys
 import os
+
+import six
 
 from rez.build_system import BuildSystem
 from rez.build_process_ import BuildType
@@ -154,7 +155,7 @@ class CustomBuildSystem(BuildSystem):
                 # write args defined in ./parse_build_args.py out as env vars
                 extra_args = getattr(self.opts.parser, "_rezbuild_extra_args", [])
 
-                for key, value in vars(self.opts).iteritems():
+                for key, value in six.iteritems(vars(self.opts)):
                     if key in extra_args:
                         varname = "__PARSE_ARG_%s" % key.upper()
 

@@ -1,3 +1,10 @@
+from contextlib import contextmanager
+import os
+
+import six
+from schema.schema import Schema, Optional, Or, Use, And
+from version.version import Version
+
 from rez.utils._version import _rez_Version
 from rez.utils.schema import Required, schema_keys
 from rez.utils.filesystem import retain_cwd
@@ -10,10 +17,6 @@ from rez.package_resources_ import help_schema, _commands_schema, \
 from rez.package_repository import create_memory_package_repository
 from rez.packages_ import Package
 from rez.package_py_utils import expand_requirement
-from schema.schema import Schema, Optional, Or, Use, And
-from version.version import Version
-from contextlib import contextmanager
-import os
 
 
 # this schema will automatically harden request strings like 'python-*'; see
@@ -129,7 +132,7 @@ class PackageMaker(AttrDictWrapper):
         data.pop("skipped_variants", None)
         data.pop("package_cls", None)
 
-        data = dict((k, v) for k, v in data.iteritems() if v is not None)
+        data = dict((k, v) for k, v in six.iteritems(data) if v is not None)
         return data
 
 

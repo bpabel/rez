@@ -1,11 +1,14 @@
+from hashlib import sha1
+import fnmatch
+import re
+
+import six
+from version.requirement import VersionedObject, Requirement
+
 from rez.packages_ import iter_packages
 from rez.exceptions import ConfigurationError
 from rez.config import config
 from rez.utils.data_utils import cached_property, cached_class_property
-from version.requirement import VersionedObject, Requirement
-from hashlib import sha1
-import fnmatch
-import re
 
 
 class PackageFilterBase(object):
@@ -156,7 +159,7 @@ class PackageFilter(PackageFilterBase):
             float: The approximate cost of the filter.
         """
         total = 0.0
-        for family, rules in self._excludes.iteritems():
+        for family, rules in six.iteritems(self._excludes):
             cost = sum(x.cost() for x in rules)
             if family:
                 cost = cost / float(10)

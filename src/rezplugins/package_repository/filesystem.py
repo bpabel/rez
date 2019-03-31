@@ -2,10 +2,13 @@
 Filesystem-based package repository
 """
 from contextlib import contextmanager
-import os.path
 import os
 import stat
 import time
+
+import six
+from schema.schema import Schema, Optional, And, Use, Or
+from version.version import Version, VersionRange
 
 from rez.package_repository import PackageRepository
 from rez.package_resources_ import PackageFamilyResource, VariantResourceHelper, \
@@ -23,8 +26,6 @@ from rez.utils.filesystem import make_path_writable
 from rez.serialise import load_from_file, FileFormat
 from rez.config import config
 from rez.backport.lru_cache import lru_cache
-from schema.schema import Schema, Optional, And, Use, Or
-from version.version import Version, VersionRange
 
 
 debug_print = config.debug_printer("resources")
@@ -370,7 +371,7 @@ class FileSystemCombinedPackageResource(PackageResourceHelper):
 
             overrides = self.parent.version_overrides
             if overrides:
-                for range_, data_ in overrides.iteritems():
+                for range_, data_ in six.iteritems(overrides):
                     if version in range_:
                         data.update(data_)
                 del data["version_overrides"]
@@ -1016,7 +1017,7 @@ class FileSystemPackageRepository(PackageRepository):
         # This is done so that variants added to an existing package don't change
         # attributes such as 'timestamp' or release-related fields like 'revision'.
         #
-        for key, value in overrides.iteritems():
+        for key, value in six.iteritems(overrides):
             if existing_package:
                 if key not in package_data:
                     package_data[key] = value

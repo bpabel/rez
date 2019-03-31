@@ -1,6 +1,8 @@
 from inspect import isclass
 from hashlib import sha1
 
+import six
+
 
 class PackageOrder(object):
     """Package reorderer base class."""
@@ -158,13 +160,13 @@ class PerFamilyOrder(PackageOrder):
         packages = {}
 
         # group package fams by orderer they use
-        for fam, orderer in self.order_dict.iteritems():
+        for fam, orderer in six.iteritems(self.order_dict):
             k = id(orderer)
             orderers[k] = orderer
             packages.setdefault(k, set()).add(fam)
 
         orderlist = []
-        for k, fams in packages.iteritems():
+        for k, fams in six.iteritems(packages):
             orderer = orderers[k]
             data = to_pod(orderer)
             data["packages"] = sorted(fams)

@@ -1,14 +1,17 @@
 """
 Manages loading of all types of Rez plugins.
 """
+import os
+import sys
+
+import six 
+
 from rez.config import config, expand_system_vars, _load_config_from_filepaths
 from rez.utils.formatting import columnise
 from rez.utils.schema import dict_to_schema
 from rez.utils.data_utils import LazySingleton, cached_property, deep_update
 from rez.utils.logging_ import print_debug, print_warning
 from rez.exceptions import RezPluginError
-import os.path
-import sys
 
 
 # modified from pkgutil standard library:
@@ -177,7 +180,7 @@ class RezPluginType(object):
         from rez.config import _plugin_config_dict
         d = _plugin_config_dict.get(self.type_name, {})
 
-        for name, plugin_class in self.plugin_classes.iteritems():
+        for name, plugin_class in six.iteritems(self.plugin_classes):
             if hasattr(plugin_class, "schema_dict") \
                     and plugin_class.schema_dict:
                 d_ = {name: plugin_class.schema_dict}

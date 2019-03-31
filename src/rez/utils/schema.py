@@ -2,7 +2,7 @@
 Utilities for working with dict-based schemas.
 """
 from schema.schema import Schema, Optional, Use, And
-
+import six
 
 # an alias which just so happens to be the same number of characters as
 # 'Optional' so that our schema are easier to read
@@ -56,7 +56,7 @@ def dict_to_schema(schema_dict, required, allow_custom_keys=True, modifier=None)
     def _to(value):
         if isinstance(value, dict):
             d = {}
-            for k, v in value.iteritems():
+            for k, v in six.iteritems(value):
                 if isinstance(k, basestring):
                     k = Required(k) if required else Optional(k)
                 d[k] = _to(v)

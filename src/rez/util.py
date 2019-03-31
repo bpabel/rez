@@ -7,6 +7,9 @@ import atexit
 import os
 import os.path
 import copy
+
+import six
+
 from rez.exceptions import RezError
 from rez.utils.yaml import dump_yaml
 from progress.bar import Bar
@@ -150,7 +153,7 @@ def get_close_pkgs(pkg, pkgs, fuzziness=0.4):
     for pkg_, r in (matches + fam_matches):
         d[pkg_] = d.get(pkg_, 0.0) + r
 
-    combined = [(k, v * 0.5) for k, v in d.iteritems()]
+    combined = [(k, v * 0.5) for k, v in six.iteritems(d)]
     return sorted(combined, key=lambda x: -x[1])
 
 

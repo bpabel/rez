@@ -1,3 +1,13 @@
+from contextlib import contextmanager
+from inspect import ismodule
+import os
+import copy
+
+import six
+import yaml
+from schema.schema import Schema, SchemaError, And, Or, Use
+from yaml.error import YAMLError
+
 from rez import __version__
 from rez.utils.data_utils import AttrDictWrapper, RO_AttrDictWrapper, \
     convert_dicts, cached_property, cached_class_property, LazyAttributeMeta, \
@@ -8,15 +18,7 @@ from rez.utils.scope import scoped_format
 from rez.exceptions import ConfigurationError
 from rez import module_root_path
 from rez.system import system
-from schema.schema import Schema, SchemaError, And, Or, Use
-import yaml
-from yaml.error import YAMLError
 from rez.backport.lru_cache import lru_cache
-from contextlib import contextmanager
-from inspect import ismodule
-import os
-import os.path
-import copy
 
 
 # -----------------------------------------------------------------------------
@@ -743,7 +745,7 @@ def expand_system_vars(data):
         elif isinstance(value, (list, tuple, set)):
             return [_expanded(x) for x in value]
         elif isinstance(value, dict):
-            return dict((k, _expanded(v)) for k, v in value.iteritems())
+            return dict((k, _expanded(v)) for k, v in six.iteritems(value))
         else:
             return value
     return _expanded(data)
@@ -804,7 +806,7 @@ def _load_config_py(filepath):
             raise ConfigurationError("Error loading configuration from %s: %s"
                                      % (filepath, str(e)))
 
-    for k, v in globs.iteritems():
+    for k, v in six.iteritems(globs):
         if k != '__builtins__' \
                 and not ismodule(v) \
                 and k not in reserved:

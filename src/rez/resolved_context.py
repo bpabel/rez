@@ -1,3 +1,20 @@
+from tempfile import mkdtemp
+from functools import wraps
+import getpass
+import socket
+import threading
+import traceback
+import inspect
+import time
+import sys
+import os
+import os.path
+
+import six
+from version.version import VersionRange
+from enum import Enum
+import yaml
+
 from rez import __version__, module_root_path
 from rez.package_repository import package_repository_manager
 from rez.solver import SolverCallbackReturn
@@ -21,23 +38,8 @@ from rez.package_filter import PackageFilterList
 from rez.shells import create_shell
 from rez.exceptions import ResolvedContextError, PackageCommandError, RezError
 from rez.utils.graph_utils import write_dot, write_compacted, read_graph_from_string
-from version.version import VersionRange
-from enum import Enum
-import yaml
 from rez.utils import json
 from rez.utils.yaml import dump_yaml
-
-from tempfile import mkdtemp
-from functools import wraps
-import getpass
-import socket
-import threading
-import traceback
-import inspect
-import time
-import sys
-import os
-import os.path
 
 
 class RezToolsVisibility(Enum):
@@ -837,7 +839,7 @@ class ResolvedContext(object):
         removed_packages = d.get("removed_packages", set())
 
         if newer_packages:
-            for name, pkgs in newer_packages.iteritems():
+            for name, pkgs in six.iteritems(newer_packages):
                 this_pkg = pkgs[0]
                 other_pkg = pkgs[-1]
                 diff_str = "(+%d versions)" % (len(pkgs) - 1)
@@ -846,7 +848,7 @@ class ResolvedContext(object):
                             diff_str))
 
         if older_packages:
-            for name, pkgs in older_packages.iteritems():
+            for name, pkgs in six.iteritems(older_packages):
                 this_pkg = pkgs[0]
                 other_pkg = pkgs[-1]
                 diff_str = "(-%d versions)" % (len(pkgs) - 1)
@@ -903,7 +905,7 @@ class ResolvedContext(object):
                  ("fillcolor", node_color),
                  ("style", "filled")]
 
-        for name, qname in nodes.iteritems():
+        for name, qname in six.iteritems(nodes):
             g.add_node(name, attrs=attrs + [("label", qname)])
         for edge in edges:
             g.add_edge(edge)
@@ -1009,7 +1011,7 @@ class ResolvedContext(object):
             for tool in tools:
                 tool_sets[tool].add(variant)
 
-        conflicts = dict((k, v) for k, v in tool_sets.iteritems() if len(v) > 1)
+        conflicts = dict((k, v) for k, v in six.iteritems(tool_sets) if len(v) > 1)
         return conflicts
 
     @_on_success
@@ -1350,7 +1352,7 @@ class ResolvedContext(object):
         ))
 
         if fields:
-            data = dict((k, v) for k, v in data.iteritems() if k in fields)
+            data = dict((k, v) for k, v in six.iteritems(data) if k in fields)
 
         return data
 
@@ -1465,7 +1467,7 @@ class ResolvedContext(object):
 
         # track context usage
         if config.context_tracking_host:
-            data = dict((k, v) for k, v in d.iteritems()
+            data = dict((k, v) for k, v in six.iteritems(d)
                         if k in config.context_tracking_context_fields)
 
             r._track_context(data, action="sourced")
@@ -1615,7 +1617,7 @@ class ResolvedContext(object):
 
         # binds objects such as 'request', which are accessible before a resolve
         bindings = self._get_pre_resolve_bindings()
-        for k, v in bindings.iteritems():
+        for k, v in six.iteritems(bindings):
             executor.bind(k, v)
 
         executor.bind('resolve', VariantsBinding(resolved_pkgs))

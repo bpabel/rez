@@ -1,12 +1,16 @@
+from functools import partial
+
+import six
+import yaml
+from yaml.error import YAMLError
+from schema.schema import Schema, SchemaError, Or, And, Use
+
 from rezgui.qt import QtGui
 from rezgui.util import create_pane
 from rezgui.mixins.ContextViewMixin import ContextViewMixin
 from rezgui.models.ContextModel import ContextModel
 from rez.config import config
-import yaml
-from yaml.error import YAMLError
-from schema.schema import Schema, SchemaError, Or, And, Use
-from functools import partial
+
 
 
 class ContextSettingsWidget(QtGui.QWidget, ContextViewMixin):
@@ -41,7 +45,7 @@ class ContextSettingsWidget(QtGui.QWidget, ContextViewMixin):
             self.schema_keys &= set(attributes)
             assert self.schema_keys
 
-        schema_dict = dict((k, v) for k, v in self.schema_dict.iteritems()
+        schema_dict = dict((k, v) for k, v in six.iteritems(self.schema_dict)
                            if k in self.schema_keys)
         self.schema = Schema(schema_dict)
 
@@ -125,7 +129,7 @@ class ContextSettingsWidget(QtGui.QWidget, ContextViewMixin):
                 "implicit_packages": implicits,
                 "package_filter": package_filter,
                 "caching": caching}
-        data = dict((k, v) for k, v in data.iteritems()
+        data = dict((k, v) for k, v in six.iteritems(data)
                     if k in self.schema_keys)
 
         self._set_text(data)
@@ -139,7 +143,7 @@ class ContextSettingsWidget(QtGui.QWidget, ContextViewMixin):
                 "implicit_packages": implicits,
                 "package_filter": model.package_filter,
                 "caching": model.caching}
-        data = dict((k, v) for k, v in data.iteritems()
+        data = dict((k, v) for k, v in six.iteritems(data)
                     if k in self.schema_keys)
 
         self._set_text(data)
@@ -148,7 +152,7 @@ class ContextSettingsWidget(QtGui.QWidget, ContextViewMixin):
 
     def _set_text(self, data):
         lines = []
-        for key, value in data.iteritems():
+        for key, value in six.iteritems(data):
             lines.append('')
             txt = yaml.dump({key: value}, default_flow_style=False)
             title = self.titles.get(key)

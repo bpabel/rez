@@ -1,3 +1,9 @@
+from inspect import isfunction
+import os.path
+import stat
+
+import six
+
 from rez.config import config
 from rez.packages_ import Package
 from rez.serialise import load_from_file, FileFormat, set_objects
@@ -6,9 +12,6 @@ from rez.exceptions import PackageMetadataError, InvalidPackageError
 from rez.utils.system import add_sys_paths
 from rez.utils.sourcecode import SourceCode
 from rez.utils.logging_ import print_info, print_error
-from inspect import isfunction
-import os.path
-import stat
 
 
 class DeveloperPackage(Package):
@@ -106,7 +109,7 @@ class DeveloperPackage(Package):
         package.includes = set()
 
         def visit(d):
-            for k, v in d.iteritems():
+            for k, v in six.iteritems(d):
                 if isinstance(v, SourceCode):
                     package.includes |= (v.includes or set())
                 elif isinstance(v, dict):

@@ -1,17 +1,19 @@
+from collections import defaultdict
+import os
+import shutil
+import sys
+
+import yaml
+from yaml.error import YAMLError
+import six
+
 from rez.util import create_forwarding_script
 from rez.exceptions import SuiteError, ResolvedContextError
 from rez.resolved_context import ResolvedContext
 from rez.utils.data_utils import cached_property
 from rez.utils.formatting import columnise, PackageRequest
 from rez.utils.colorize import warning, critical, Printer, alias as alias_col
-import yaml
-from yaml.error import YAMLError
 from rez.utils.yaml import dump_yaml
-from collections import defaultdict
-import os
-import os.path
-import shutil
-import sys
 
 
 class Suite(object):
@@ -388,7 +390,7 @@ class Suite(object):
 
     def to_dict(self):
         contexts_ = {}
-        for k, data in self.contexts.iteritems():
+        for k, data in six.iteritems(self.contexts):
             data_ = data.copy()
             if "context" in data_:
                 del data_["context"]
@@ -456,7 +458,7 @@ class Suite(object):
             print "creating alias wrappers in %r..." % tools_path
 
         tools = self.get_tools()
-        for tool_alias, d in tools.iteritems():
+        for tool_alias, d in six.iteritems(tools):
             tool_name = d["tool_name"]
             context_name = d["context_name"]
 

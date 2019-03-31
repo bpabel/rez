@@ -96,17 +96,17 @@ if __name__ == "__main__":
             lines.pop()
 
         lines.append('')
-        lines.append('')
+        # lines.append('')
 
-        authors = extract_copyright_authors(txt)
-        authors = ["Allan Johns"] + authors
+        # authors = extract_copyright_authors(txt)
+        # authors = ["Allan Johns"] + authors
 
-        copyright_line_ = copyright_line.format(
-            year=year, authors=", ".join(authors))
+        # copyright_line_ = copyright_line.format(
+        #     year=year, authors=", ".join(authors))
 
-        lines.append(copyright_line_)
-        lines.extend(notice_lines)
-        lines.append('')
+        # lines.append(copyright_line_)
+        # lines.extend(notice_lines)
+        # lines.append('')
 
         new_txt = '\n'.join(lines)
 

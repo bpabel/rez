@@ -7,26 +7,31 @@ with a faster resolve.
 
 See SOLVER.md for an in-depth description of how this module works.
 """
+import copy
+import time
+import sys
+import os
+from enum import Enum
+from contextlib import contextmanager
+
+import six
+from version.version import Version, VersionRange
+from version.requirement import VersionedObject, Requirement, \
+    RequirementList
+from sortedcontainers.sortedset import SortedSet
+from pygraph.classes.digraph import digraph
+from pygraph.algorithms.cycles import find_cycle
+from pygraph.algorithms.accessibility import accessibility
+
 from rez.config import config
 from rez.packages_ import iter_packages
 from rez.package_repository import package_repo_stats
 from rez.utils.logging_ import print_debug
 from rez.utils.data_utils import cached_property
-from pygraph.classes.digraph import digraph
-from pygraph.algorithms.cycles import find_cycle
-from pygraph.algorithms.accessibility import accessibility
 from rez.exceptions import PackageNotFoundError, ResolveError, \
     PackageFamilyNotFoundError, RezSystemError
-from version.version import Version, VersionRange
-from version.requirement import VersionedObject, Requirement, \
-    RequirementList
-from enum import Enum
-from sortedcontainers.sortedset import SortedSet
-from contextlib import contextmanager
-import copy
-import time
-import sys
-import os
+
+
 
 
 # a hidden control for forcing to non-optimized solving mode. This is here as
@@ -1111,7 +1116,7 @@ def _get_dependency_order(g, node_list):
     """Return list of nodes as close as possible to the ordering in node_list,
     but with child nodes earlier in the list than parents."""
     access_ = accessibility(g)
-    deps = dict((k, set(v) - set([k])) for k, v in access_.iteritems())
+    deps = dict((k, set(v) - set([k])) for k, v in six.iteritems(access_))
     nodes = node_list + list(set(g.nodes()) - set(node_list))
     ordered_nodes = []
 
@@ -1613,7 +1618,7 @@ class _ResolvePhase(_Common):
                     _add_edge(id1, id2)
 
         # add extractions
-        for (src_fam, _), dest_req in self.extractions.iteritems():
+        for (src_fam, _), dest_req in six.iteritems(self.extractions):
             id1 = scope_nodes.get(src_fam)
             if id1 is not None:
                 id2 = _add_request_node(dest_req)
@@ -1622,7 +1627,7 @@ class _ResolvePhase(_Common):
         # add extraction intersections
         extracted_fams = set(x[1] for x in self.extractions.iterkeys())
         for fam in extracted_fams:
-            requests = [v for k, v in self.extractions.iteritems() if k[1] == fam]
+            requests = [v for k, v in six.iteritems(self.extractions) if k[1] == fam]
             if len(requests) > 1:
                 reqlist = RequirementList(requests)
                 if not reqlist.conflict:
@@ -1679,7 +1684,7 @@ class _ResolvePhase(_Common):
                     _add_cycle_edge(id1, id2)
 
         # connect leaf-node requests to a matching scope, if any
-        for request, id1 in request_nodes.iteritems():
+        for request, id1 in six.iteritems(request_nodes):
             if not g.neighbors(id1):  # leaf node
                 id2 = scope_nodes.get(request.name)
                 if id2 is not None:
@@ -1692,7 +1697,7 @@ class _ResolvePhase(_Common):
             access_dict = accessibility(g)
             del_nodes = set()
 
-            for n, access_nodes in access_dict.iteritems():
+            for n, access_nodes in six.iteritems(access_dict):
                 if not (set(access_nodes) & failure_nodes):
                     del_nodes.add(n)
 

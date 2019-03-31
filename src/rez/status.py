@@ -1,7 +1,9 @@
 import sys
 import os
-import os.path
 from fnmatch import fnmatch
+
+import six
+
 from rez import __version__
 from rez.utils.data_utils import cached_property
 from rez.resolved_context import ResolvedContext
@@ -147,7 +149,7 @@ class Status(object):
                     seen.add(tool)
 
         for suite in self.suites:
-            for tool, d in suite.get_tools().iteritems():
+            for tool, d in six.iteritems(suite.get_tools()):
                 if tool in seen:
                     continue
                 if pattern and not fnmatch(tool, pattern):
