@@ -1,3 +1,9 @@
+from textwrap import dedent
+import os
+
+from version.version import Version
+from schema.schema import Schema, SchemaError, Optional, Or, And, Use
+
 from rez.utils.resources import Resource
 from rez.utils.schema import Required, schema_keys
 from rez.utils.logging_ import print_warning
@@ -7,10 +13,6 @@ from rez.utils.data_utils import cached_property, AttributeForwardMeta, \
 from rez.utils.formatting import PackageRequest
 from rez.exceptions import PackageMetadataError, ResourceError
 from rez.config import config, Config, create_config
-from version.version import Version
-from schema.schema import Schema, SchemaError, Optional, Or, And, Use
-from textwrap import dedent
-import os.path
 
 
 # package attributes created at release time

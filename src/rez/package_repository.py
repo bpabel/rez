@@ -1,13 +1,14 @@
+from contextlib import contextmanager
+import threading
+import os
+import time
+
 from rez.utils.resources import ResourcePool, ResourceHandle
 from rez.utils.data_utils import cached_property
 from rez.plugin_managers import plugin_manager
 from rez.config import config
 from rez.backport.lru_cache import lru_cache
 from rez.exceptions import ResourceError
-from contextlib import contextmanager
-import threading
-import os.path
-import time
 
 
 def get_package_repository_types():

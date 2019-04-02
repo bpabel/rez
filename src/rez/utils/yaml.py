@@ -1,12 +1,14 @@
-from rez.utils.sourcecode import SourceCode
+from types import FunctionType, BuiltinFunctionType
+from inspect import getsourcelines
+from textwrap import dedent
+
 import yaml
 from yaml.dumper import SafeDumper
 from yaml.nodes import ScalarNode, MappingNode
 from version.version import Version
 from version.requirement import Requirement
-from types import FunctionType, BuiltinFunctionType
-from inspect import getsourcelines
-from textwrap import dedent
+
+from rez.utils.sourcecode import SourceCode
 
 
 class _Dumper(SafeDumper):

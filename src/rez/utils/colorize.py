@@ -1,6 +1,8 @@
 import sys
 import logging
+
 import colorama
+
 from rez.config import config
 from rez.utils.platform_ import platform_
 

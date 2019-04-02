@@ -1,3 +1,8 @@
+import subprocess
+import webbrowser
+import os
+import sys
+
 from rez.packages_ import iter_packages
 from rez.config import config
 from rez.rex_bindings import VersionBinding
@@ -5,10 +10,6 @@ from rez.utils.system import popen
 from rez.utils.backcompat import convert_old_command_expansions
 from rez.utils.scope import scoped_formatter
 from rez.system import system
-import subprocess
-import webbrowser
-import os.path
-import sys
 
 
 class PackageHelp(object):

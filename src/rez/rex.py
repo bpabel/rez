@@ -3,10 +3,13 @@ import subprocess
 import sys
 import pipes
 import re
-import UserDict
 import inspect
 import traceback
 from string import Formatter
+from collections import MutableMapping
+
+from enum import Enum
+
 from rez.system import system
 from rez.config import config
 from rez.exceptions import RexError, RexUndefinedVariableError, RezSystemError
@@ -16,7 +19,6 @@ from rez.utils.system import popen
 from rez.utils.sourcecode import SourceCode, SourceCodeError
 from rez.utils.data_utils import AttrDictWrapper
 from rez.utils.formatting import expandvars
-from enum import Enum
 
 
 #===============================================================================
@@ -930,7 +932,7 @@ class NamespaceFormatter(Formatter):
 # Environment Classes
 #===============================================================================
 
-class EnvironmentDict(UserDict.DictMixin):
+class EnvironmentDict(MutableMapping):
     """
     Provides a mapping interface to `EnvironmentVariable` instances,
     which provide an object-oriented interface for recording environment
@@ -952,11 +954,15 @@ class EnvironmentDict(UserDict.DictMixin):
         self._var_cache = dict((k, EnvironmentVariable(k, self))
                                for k in manager.parent_environ.iterkeys())
 
-    def keys(self):
-        return self._var_cache.keys()
-
     def __repr__(self):
         return '%s(%s)' % (self.__class__.__name__, str(self._var_cache))
+
+    def __iter__(self):
+        for k in self._var_cache:
+            yield k
+
+    def __len__(self):
+        return len(self._var_cache)
 
     def __getitem__(self, key):
         if key not in self._var_cache:
@@ -966,8 +972,9 @@ class EnvironmentDict(UserDict.DictMixin):
     def __setitem__(self, key, value):
         self[key].set(value)
 
-    def __contains__(self, key):
-        return (key in self._var_cache)
+    def __delitem__(self, key):
+        del self._var_cache[key]
+
 
 
 class EnvironmentVariable(object):

@@ -1,10 +1,19 @@
-from rez.packages_ import get_latest_package
-from version.version import Version
+from tempfile import mkdtemp
+from StringIO import StringIO
+from pipes import quote
+import subprocess
+import shutil
+import sys
+import os
 from distlib import DistlibException
 from distlib.database import DistributionPath
 from distlib.markers import interpret
 from distlib.util import parse_name_and_version
+
+from version.version import Version
 from enum.enum import Enum
+
+from rez.packages_ import get_latest_package
 from rez.resolved_context import ResolvedContext
 from rez.utils.system import popen
 from rez.utils.logging_ import print_debug, print_info, print_warning
@@ -13,14 +22,6 @@ from rez.exceptions import BuildError, PackageFamilyNotFoundError, \
 from rez.package_maker__ import make_package
 from rez.config import config
 from rez.system import System
-from tempfile import mkdtemp
-from StringIO import StringIO
-from pipes import quote
-import subprocess
-import os.path
-import shutil
-import sys
-import os
 
 
 class InstallMode(Enum):

@@ -6,7 +6,6 @@ from inspect import isfunction, ismodule, getargspec
 from StringIO import StringIO
 import sys
 import os
-import os.path
 import threading
 
 import six
@@ -414,6 +413,8 @@ def clear_file_caches():
     _load_from_file.forget()
 
 
-load_functions = {FileFormat.py:      load_py,
-                  FileFormat.yaml:    load_yaml,
-                  FileFormat.txt:     load_txt}
+load_functions = {
+    FileFormat.py: load_py,
+    FileFormat.yaml: load_yaml,
+    FileFormat.txt: load_txt,
+}

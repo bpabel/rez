@@ -1,3 +1,10 @@
+from contextlib import contextmanager
+from pipes import quote
+import getpass
+import os
+
+from enum import Enum
+
 from rez.packages_ import iter_packages
 from rez.exceptions import BuildProcessError, BuildContextResolveError, \
     ReleaseHookCancellingError, RezError, ReleaseError, BuildError, \
@@ -7,11 +14,7 @@ from rez.resolved_context import ResolvedContext
 from rez.release_hook import create_release_hooks
 from rez.resolver import ResolverStatus
 from rez.config import config
-from enum import Enum
-from contextlib import contextmanager
-from pipes import quote
-import getpass
-import os.path
+
 
 
 debug_print = config.debug_printer("package_release")

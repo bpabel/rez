@@ -1,13 +1,13 @@
 """
 Functions for converting python distributions to rez packages.
 """
-from rez.exceptions import RezSystemError
 import pkg_resources
 import shutil
 import sys
 import os
-import os.path
 import textwrap
+
+from rez.exceptions import RezSystemError
 
 
 def _mkdirs(*dirs):

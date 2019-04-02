@@ -1,12 +1,13 @@
-from rez.utils.formatting import indent
-from rez.utils.data_utils import cached_property
-from rez.utils.logging_ import print_debug
 from inspect import getsourcelines
 from textwrap import dedent
 from glob import glob
 import traceback
 import os.path
 import imp
+
+from rez.utils.formatting import indent
+from rez.utils.data_utils import cached_property
+from rez.utils.logging_ import print_debug
 
 
 def early():

@@ -792,7 +792,7 @@ def _load_config_py(filepath):
 
     reserved = dict(
         rez_version=__version__,
-        ModifyList=ModifyList
+        ModifyList=ModifyList,
     )
 
     globs = reserved.copy()
@@ -807,9 +807,7 @@ def _load_config_py(filepath):
                                      % (filepath, str(e)))
 
     for k, v in six.iteritems(globs):
-        if k != '__builtins__' \
-                and not ismodule(v) \
-                and k not in reserved:
+        if k not in ['__builtins__', 'builtins'] and not ismodule(v) and k not in reserved:
             result[k] = v
 
     return result

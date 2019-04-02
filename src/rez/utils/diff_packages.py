@@ -1,10 +1,11 @@
+from tempfile import mkdtemp
+from subprocess import Popen
+import os
+
 from rez.packages_ import iter_packages
 from rez.config import config
 from rez.plugin_managers import plugin_manager
 from rez.exceptions import RezError
-from tempfile import mkdtemp
-from subprocess import Popen
-import os.path
 
 
 def diff_packages(pkg1, pkg2=None):

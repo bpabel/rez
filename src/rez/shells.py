@@ -1,6 +1,10 @@
 """
 Pluggable API for creating subshells using different programs, such as bash.
 """
+import subprocess
+import os
+import pipes
+
 from rez.rex import RexExecutor, ActionInterpreter, OutputStyle
 from rez.util import shlex_join
 from rez.backport.shutilwhich import which
@@ -10,10 +14,6 @@ from rez.system import system
 from rez.exceptions import RezSystemError
 from rez.rex import EscapedString
 from rez.config import config
-import subprocess
-import os
-import os.path
-import pipes
 
 
 def get_shell_types():

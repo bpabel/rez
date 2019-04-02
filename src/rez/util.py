@@ -9,10 +9,10 @@ import os.path
 import copy
 
 import six
+from progress.bar import Bar
 
 from rez.exceptions import RezError
 from rez.utils.yaml import dump_yaml
-from progress.bar import Bar
 
 
 DEV_NULL = open(os.devnull, 'w')

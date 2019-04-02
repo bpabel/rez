@@ -1,14 +1,14 @@
 import platform
 import sys
 import os
-import os.path
 import re
+from tempfile import gettempdir
+
 from rez.util import which
 from rez.utils.system import popen
 from rez.utils.data_utils import cached_property
 from rez.utils.platform_mapped import platform_mapped
 from rez.exceptions import RezSystemError
-from tempfile import gettempdir
 
 
 class Platform(object):

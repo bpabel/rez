@@ -1,12 +1,13 @@
+from pipes import quote
+import subprocess
+import time
+import sys
+
 from rez.config import config
 from rez.resolved_context import ResolvedContext
 from rez.packages_ import get_latest_package_from_string, Variant
 from rez.exceptions import PackageNotFoundError, PackageTestError
 from rez.utils.colorize import heading, Printer
-from pipes import quote
-import subprocess
-import time
-import sys
 
 
 class PackageTestRunner(object):
